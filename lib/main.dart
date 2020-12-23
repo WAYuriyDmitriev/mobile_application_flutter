@@ -4,6 +4,7 @@ import 'package:untitled2/database_helper.dart';
 import 'package:untitled2/enviroment.dart';
 import 'package:untitled2/ToDoNote.dart';
 import 'package:untitled2/event_emitter.dart';
+import 'package:untitled2/http_helper.dart';
 import 'package:untitled2/list_view_element.dart';
 import 'package:untitled2/list_view_items.dart';
 import 'dart:async';
@@ -15,6 +16,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() {
+  HttpHelper.getToDoList(1).then((value) => null);
   runApp(MyApp());
 }
 
