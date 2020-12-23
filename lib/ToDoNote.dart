@@ -12,4 +12,21 @@ class ToDoNote {
     note.id = id;
     return note;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'title': title,
+      'description': description,
+      'isComplete': isComplete ? 1 : 0
+    };
+  }
+
+  static ToDoNote DynamicToToDoNode(dynamic dynamicElemet) {
+    ToDoNote node = new ToDoNote(dynamicElemet['name'], dynamicElemet['title'],
+        dynamicElemet['description'], dynamicElemet['isComplete'] == 1);
+    node.id = dynamicElemet['id'];
+    return node;
+  }
 }

@@ -27,6 +27,13 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+
+            <meta-data android:name="com.google.android.geo.API_KEY"
+                       android:value="AIzaSyCqBRCLA6tKyrN9KXls0UZ1JtVHmMopbOA"
+            />
+
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -34,8 +41,15 @@
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+
+       <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCqBRCLA6tKyrN9KXls0UZ1JtVHmMopbOA"/>
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+
+    <uses-permission
+            android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+            android:name="android.permission.ACCESS_COARSE_LOCATION" />
 </manifest>

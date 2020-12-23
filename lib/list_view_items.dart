@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:untitled2/database_helper.dart';
 import 'package:untitled2/event_emitter.dart';
 import 'package:untitled2/main.dart';
 import 'ToDoNote.dart';
@@ -8,15 +8,12 @@ class ListViewItems extends StatefulWidget {
   DynamicList dynamicList;
   EventEmitter eventEmitter;
 
-  List<ToDoNote> toDoList = [
-    new ToDoNote("name", "title", "discription", true),
-    new ToDoNote("name", "title", "discription", !true),
-    new ToDoNote("name", "title", "discription", !!true),
-    new ToDoNote("name", "title", "discription", !!!true),
-  ];
+  List<ToDoNote> toDoList = [];
 
-  ListViewItems(this.eventEmitter){
-   eventEmitter.saveOrUpdateObserver$.listen((event) {
+  ListViewItems(this.eventEmitter) {
+    getNotesByDataBase();
+
+    eventEmitter.saveOrUpdateObserver$.listen((event) {
       int i = 0;
       while (i < toDoList.length && event.id != toDoList[i].id) {
         i++;
@@ -25,10 +22,20 @@ class ListViewItems extends StatefulWidget {
       if (i == toDoList.length) {
         event.id = toDoList.length;
         toDoList.add(event);
+
+        DataBaseHelper.insertNote(event).then((value) => null);
         return;
       }
 
+      DataBaseHelper.updateNote(event).then((value) => null);
       toDoList[i] = event;
+    });
+  }
+
+  void getNotesByDataBase() {
+    DataBaseHelper.allToDoNotes().then((value) {
+      toDoList = value;
+      dynamicList.update();
     });
   }
 
@@ -39,16 +46,14 @@ class ListViewItems extends StatefulWidget {
   }
 
   void update() {
-    dynamicList.update();
+    getNotesByDataBase();
   }
 }
 
 class DynamicList extends State<ListViewItems> {
   EventEmitter eventEmitter;
 
-  DynamicList(this.eventEmitter) {
-
-  }
+  DynamicList(this.eventEmitter) {}
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +64,8 @@ class DynamicList extends State<ListViewItems> {
   }
 
   buildCardList(BuildContext context, int index) {
-    final trip = widget.toDoList[index];
-    trip.id = index;
+    final note = widget.toDoList[index];
+    note.id = index;
     final hexColorButton = HexColor('#6200EE');
     return GestureDetector(
       onTap: () {
@@ -79,7 +84,7 @@ class DynamicList extends State<ListViewItems> {
                         top: 8.0, bottom: 4.0, left: 20.0),
                     child: Row(children: <Widget>[
                       Text(
-                        trip.title,
+                        note.title,
                         style: new TextStyle(fontSize: 30.0),
                       ),
                       Spacer(),
@@ -89,7 +94,7 @@ class DynamicList extends State<ListViewItems> {
                     padding: const EdgeInsets.only(
                         top: 4.0, bottom: 40.0, left: 20.0),
                     child: Row(children: <Widget>[
-                      Text("${trip.name}"),
+                      Text("${note.name}"),
                       Spacer(),
                     ]),
                   ),
@@ -99,7 +104,7 @@ class DynamicList extends State<ListViewItems> {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          "${trip.description}",
+                          "${note.description}",
                           style: new TextStyle(fontSize: 13.0),
                         ),
                         Spacer()
@@ -110,7 +115,7 @@ class DynamicList extends State<ListViewItems> {
                       padding: const EdgeInsets.only(left: 20, top: 10.0),
                       child: Row(
                         children: <Widget>[
-                          _getButtonComplete(trip, hexColorButton),
+                          _getButtonComplete(note, hexColorButton),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: FlatButton(
@@ -128,7 +133,8 @@ class DynamicList extends State<ListViewItems> {
                               ),
                               color: Colors.white,
                               onPressed: () {
-                                widget.toDoList.remove(trip);
+                                widget.toDoList.remove(note);
+                                DataBaseHelper.deleteNode(note.id);
                                 setState(() {});
                               },
                             ),
@@ -160,12 +166,6 @@ class DynamicList extends State<ListViewItems> {
   }
 
   void update() {
-    widget.toDoList = [
-      ToDoNote("name", "title", "discription", true),
-      ToDoNote("name", "title", "discription", !true),
-      ToDoNote("name", "title", "discription", !!true),
-      ToDoNote("name", "title", "discription", !!!true),
-    ];
     setState(() {});
   }
 }
