@@ -1,0 +1,11 @@
+{
+  "button_complete": "COMPLETE",
+  "button_delete": "DELETE",
+
+  "maps_title": "Maps",
+
+  "task_name": "Task name",
+  "task_title": "Task title",
+  "task_description": "Task description",
+  "task_complete": "Task is complete"
+}

@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:untitled2/event_emitter.dart';
 import 'package:untitled2/main.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'ToDoNote.dart';
 
 class ListViewElement extends StatefulWidget {
@@ -59,7 +60,7 @@ class ListViewElementState extends State<ListViewElement> {
               },
               maxLines: 1,
               decoration: InputDecoration(
-                labelText: 'Имя задачи',
+                labelText: 'task_name'.tr(),
                 border: OutlineInputBorder(),
                 suffix: new SizedBox(
                     height: 18.0,
@@ -83,7 +84,7 @@ class ListViewElementState extends State<ListViewElement> {
                   },
                   activeColor: HexColor('#6200EE'),
                 ),
-                Text('Задача выполнена')
+                Text('task_complete'.tr())
               ],
             ),
             Padding(
@@ -96,7 +97,7 @@ class ListViewElementState extends State<ListViewElement> {
                   toDoNote.title = text;
                 },
                 decoration: InputDecoration(
-                  labelText: 'Заголовок задачи',
+                  labelText: 'task_title'.tr(),
                   border: OutlineInputBorder(),
                   suffix: new SizedBox(
                       height: 18.0,
@@ -119,7 +120,7 @@ class ListViewElementState extends State<ListViewElement> {
               controller: descriptionController,
               maxLines: 1,
               decoration: InputDecoration(
-                labelText: 'Описание задачи',
+                labelText: 'task_description'.tr(),
                 border: OutlineInputBorder(),
                 suffix: new SizedBox(
                     height: 18.0,

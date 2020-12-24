@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:untitled2/database_helper.dart';
@@ -16,7 +17,13 @@ import 'package:sqflite/sqflite.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(EasyLocalization(child: MyApp(), supportedLocales: [
+    Locale('en', ''),
+    Locale('ru', '')
+  ],
+      path: 'assets/translations',
+  /*startLocale: Locale('ru',''),*/
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -209,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ),
-              title: Text('Карта'),
+              title: Text('maps_title'.tr()),
               actions: <Widget>[
                 Padding(
                     padding: EdgeInsets.only(right: 20.0),

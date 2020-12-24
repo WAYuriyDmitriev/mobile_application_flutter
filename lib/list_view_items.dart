@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:untitled2/database_helper.dart';
 import 'package:untitled2/event_emitter.dart';
 import 'package:untitled2/main.dart';
@@ -140,7 +142,7 @@ class DynamicList extends State<ListViewItems> {
                                     color: hexColorButton,
                                   ),
                                   Text(
-                                    'УДАЛИТЬ',
+                                    'button_delete'.tr(),
                                     style: TextStyle(color: hexColorButton),
                                   )
                                 ],
@@ -168,7 +170,7 @@ class DynamicList extends State<ListViewItems> {
   Widget _getButtonComplete(ToDoNote note, HexColor hexColorButton) {
     return new RaisedButton(
       child: Text(
-        'ВЫПОЛНЕНО',
+        'button_complete'.tr(),
         style: TextStyle(color: Colors.white),
       ),
       color: note.isComplete ? hexColorButton : HexColor('#E0E0E0'),

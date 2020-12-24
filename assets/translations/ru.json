@@ -1,0 +1,11 @@
+{
+  "button_complete": "ВЫПОЛНЕНО",
+  "button_delete": "УДАЛИТЬ",
+
+  "maps_title": "Карта",
+
+  "task_name": "Имя задачи",
+  "task_title": "Заголовок задаич",
+  "task_description": "Описание задачи",
+  "task_complete": "Задача выполнена"
+}
