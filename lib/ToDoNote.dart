@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ToDoNote {
   int id;
   String name;
@@ -28,5 +30,31 @@ class ToDoNote {
         dynamicElemet['description'], dynamicElemet['isComplete'] == 1);
     node.id = dynamicElemet['id'];
     return node;
+  }
+
+  static fromJson(dynamic dynamicElemet) {
+    ToDoNote node = new ToDoNote(
+        dynamicElemet['taskName'],
+        dynamicElemet['title'],
+        dynamicElemet['description'],
+        dynamicElemet['taskComplete']);
+    node.id = dynamicElemet['taskId'];
+    return node;
+  }
+
+  dynamic toJson(int userId) {
+    return jsonEncode({
+      'userId': userId,
+      'taskId': id == null ? 0 : id,
+      'taskName': name,
+      'title': title,
+      'description': description,
+      'taskComplete': isComplete
+    });
+  }
+
+  @override
+  String toString() {
+    return '$name\n $title\n $description';
   }
 }

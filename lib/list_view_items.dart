@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:untitled2/database_helper.dart';
 import 'package:untitled2/event_emitter.dart';
 import 'package:untitled2/main.dart';
 import 'ToDoNote.dart';
+import 'http_helper.dart';
 
 class ListViewItems extends StatefulWidget {
   DynamicList dynamicList;
@@ -20,16 +22,22 @@ class ListViewItems extends StatefulWidget {
       }
 
       if (i == toDoList.length) {
-        event.id = toDoList.length;
-        toDoList.add(event);
-
-        DataBaseHelper.insertNote(event).then((value) => null);
+        HttpHelper.postNode(event).then(
+            (value) {
+              DataBaseHelper.insertNote(value).then((value1) => null);
+              toDoList.add(value);
+            });
         return;
       }
 
-      DataBaseHelper.updateNote(event).then((value) => null);
+      updateNote(event);
       toDoList[i] = event;
     });
+  }
+
+  void updateNote(note) {
+     HttpHelper.putNode(note).then((value) => null);
+    DataBaseHelper.updateNote(note).then((value) => null);
   }
 
   void getNotesByDataBase() {
@@ -43,6 +51,13 @@ class ListViewItems extends StatefulWidget {
   State createState() {
     dynamicList = new DynamicList(eventEmitter);
     return dynamicList;
+  }
+
+  void getList() async {
+    var value = await HttpHelper.getToDoList();
+
+    this.toDoList = value;
+    dynamicList.update();
   }
 
   void update() {
@@ -65,7 +80,6 @@ class DynamicList extends State<ListViewItems> {
 
   buildCardList(BuildContext context, int index) {
     final note = widget.toDoList[index];
-    note.id = index;
     final hexColorButton = HexColor('#6200EE');
     return GestureDetector(
       onTap: () {
@@ -134,7 +148,8 @@ class DynamicList extends State<ListViewItems> {
                               color: Colors.white,
                               onPressed: () {
                                 widget.toDoList.remove(note);
-                                DataBaseHelper.deleteNode(note.id);
+                                HttpHelper.deleteNode(note).then((value) => null);
+                                DataBaseHelper.deleteNode(note.id).then((value) => null);
                                 setState(() {});
                               },
                             ),
@@ -150,16 +165,17 @@ class DynamicList extends State<ListViewItems> {
     );
   }
 
-  Widget _getButtonComplete(ToDoNote trip, HexColor hexColorButton) {
+  Widget _getButtonComplete(ToDoNote note, HexColor hexColorButton) {
     return new RaisedButton(
       child: Text(
         'ВЫПОЛНЕНО',
         style: TextStyle(color: Colors.white),
       ),
-      color: trip.isComplete ? hexColorButton : HexColor('#E0E0E0'),
-      textColor: trip.isComplete ? Colors.white : HexColor('#8B8B8B'),
+      color: note.isComplete ? hexColorButton : HexColor('#E0E0E0'),
+      textColor: note.isComplete ? Colors.white : HexColor('#8B8B8B'),
       onPressed: () {
-        trip.isComplete = !trip.isComplete;
+        note.isComplete = !note.isComplete;
+        widget.updateNote(note);
         setState(() {});
       },
     );

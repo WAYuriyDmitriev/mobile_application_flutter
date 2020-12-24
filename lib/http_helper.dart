@@ -1,20 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:untitled2/ToDoNote.dart';
 import 'package:untitled2/enviroment.dart';
 
 class HttpHelper {
-  static Future<List<ToDoNote>> getToDoList(int id) async {
-    var response =
-        await http.get('http://188.225.11.200:8080/todoback/tasks?userId=$id');
-    print(response.body);
-    // Продолжить отсюда
-    // https://flutter.dev/docs/cookbook/networking/background-parsing
+  static Future<List<ToDoNote>> getToDoList() async {
+    var response = await http.get('$API_URL_TASK?userId=$USER_ID');
+    Map<String, dynamic> decodeContext = jsonDecode(response.body);
+    List<dynamic> context = decodeContext['content'];
+    return context
+        .map<ToDoNote>((elJson) => ToDoNote.fromJson(elJson))
+        .toList();
   }
 
-  static Future<void> getNearPlaces() async {
-    var responce = await http.get(
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?radius=5000&location=53.2038,50.1606&key=$API_KEY&language=ru');
-    print(responce.body);
+  static Future<void> putNode(ToDoNote toDoNote) async {
+    var json = toDoNote.toJson(USER_ID);
+    return await http.put(API_URL_TASK,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json);
+  }
+
+  static Future<ToDoNote> postNode(ToDoNote toDoNote) async {
+    var jsonBody = toDoNote.toJson(USER_ID);
+    var responce = await http.post(API_URL_TASK,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonBody);
+    var responseBody = jsonDecode(responce.body);
+    toDoNote.id = responseBody['taskId'];
+    return toDoNote;
+  }
+
+  static Future<void> deleteNode(ToDoNote toDoNote) async {
+    return await http.delete('$API_URL_TASK/${toDoNote.id}');
   }
 }

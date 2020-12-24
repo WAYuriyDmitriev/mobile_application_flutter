@@ -16,7 +16,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() {
-  HttpHelper.getToDoList(1).then((value) => null);
   runApp(MyApp());
 }
 
@@ -143,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: IconButton(
                         icon: const Icon(Icons.sync_outlined, size: 26.0),
                         onPressed: () {
-                          listViewItems.update();
+                          listViewItems.getList();
                         },
                       ),
                     )),
