@@ -16,10 +16,17 @@ void main() {
 }
 
 void _testMain() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Тест на наличие всех иконок', (WidgetTester tester) async {
     app.main();
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.add));
+    await tester.tap(find.byIcon(Icons.clear));
+    await tester.tap(find.byIcon(Icons.sync));
+    await tester.tap(find.byIcon(Icons.map));
+    await tester.tap(find.byIcon(Icons.check));
+    await tester.tap(find.byIcon(Icons.arrow_back));
+    await tester.tap(find.byIcon(Icons.location_on));
+    await tester.tap(find.byIcon(Icons.location_off));
     await tester.pump();
   });
 }
