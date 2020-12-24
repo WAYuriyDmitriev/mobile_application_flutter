@@ -67,17 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Map<EStateApp, StateItem> mapState;
   EStateApp currentState = EStateApp.View;
 
-  /**
-   *
-   */
-
   LatLng _initialcameraposition = LatLng(53.2038, 50.1606);
   GoogleMapController _controller;
   Location _location = Location();
-
-  /**
-   *
-   */
 
   bool isLocation = false;
 
@@ -236,17 +228,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           setState(() {});
                         },
                       ),
-                    )),
-                Padding(
-                    padding: EdgeInsets.only(right: 20.0),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: IconButton(
-                        icon: const Icon(Icons.menu, size: 26.0),
-                        color: Colors.white,
-                        onPressed: () {},
-                      ),
-                    ))
+                    )
+                ),
               ]),
           GoogleMap(
               initialCameraPosition:

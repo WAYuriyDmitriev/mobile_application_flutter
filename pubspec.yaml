@@ -36,6 +36,8 @@ dependencies:
   http: 0.12.2
   sqflite:
   path:
+  geolocator: 5.0.1
+  flutter_google_places: 0.2.6
 
 dev_dependencies:
   flutter_test:
